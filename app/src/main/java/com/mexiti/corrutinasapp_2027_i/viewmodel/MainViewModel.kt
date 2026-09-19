@@ -32,7 +32,25 @@ class MainViewModel:ViewModel(){
         viewModelScope.launch {
             resetState()
             isLoading = true
-            resultState = "Consultadon 2 APIs en paralelo ..."
+            //Primer Paso
+            resultState = "Iniciando descarga ..."
+            for (i in 1..3){
+                delay(1000)
+                countTime = i
+            }
+            //Segundo paso se ejecuta hasta que termina el anterior
+            resultState = "Procesando datos ..."
+            delay(2000)
+            resultState = "¡Proceso terminado exitosamente"
+            isLoading = false
+        }
+    }
+
+    fun fetchDataSincronizada(){
+        viewModelScope.launch {
+            resetState()
+            isLoading = true
+            resultState = "Consultando 2 APIs en paralelo ..."
 
             //Lanzamos dos tareas concurrentes
             val job1 = async {

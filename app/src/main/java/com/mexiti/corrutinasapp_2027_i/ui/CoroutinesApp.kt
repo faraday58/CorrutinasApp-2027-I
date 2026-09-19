@@ -1,5 +1,6 @@
 package com.mexiti.corrutinasapp_2027_i.ui
 
+import android.widget.Space
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +9,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -49,14 +52,38 @@ fun CoroutinesApp(viewModel: MainViewModel, modifier: Modifier = Modifier){
             Text(stringResource(R.string.cambio_de_color))
         }
         Spacer(modifier.height(30.dp) )
-
-        Text(viewModel.resultState)
-        Spacer(modifier.height(30.dp))
-        Button({
-                 viewModel.fetchData()
-        }) {
-            Text(stringResource(R.string.realizar_consulta))
+        //Monitor de Estado y Contador
+        Text(
+            text = "Tiempo transcurrido: ${viewModel.countTime } [s] ",
+            style = MaterialTheme.typography.titleMedium
+        )
+        Spacer(Modifier.height(8.dp))
+        Text(
+            text = viewModel.resultState,
+            style = MaterialTheme.typography.bodyLarge
+        )
+        Spacer(Modifier.height(16.dp))
+        if(viewModel.isLoading){
+            CircularProgressIndicator()
         }
+
+        Spacer(Modifier.height(20.dp))
+        //Controles de Sincronización
+        Button(
+            onClick = {viewModel.fetchDataSecuencial()},
+            enabled = !viewModel.isLoading
+        ) {
+            Text("Sincronización Secuencial")
+        }
+
+        Spacer(Modifier.height(10.dp))
+        Button(
+            onClick = {viewModel.fetchDataSincronizada()},
+            enabled = !viewModel.isLoading
+        ) {
+            Text("Sincronización Paralela (async/await)")
+        }
+
     }
 }
 
