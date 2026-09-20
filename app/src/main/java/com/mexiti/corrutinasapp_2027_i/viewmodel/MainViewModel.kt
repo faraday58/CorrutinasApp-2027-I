@@ -13,9 +13,28 @@ class MainViewModel:ViewModel(){
 
     var resultState by mutableStateOf("")
         private set
+    var countN by mutableStateOf(2)
+        private set
+    var countTime by mutableStateOf(0)
+        private set
+
+    var isRunning by mutableStateOf(false)
+        private set
 
 
 
+    fun fetchDataTimer( ){
+        viewModelScope.launch {
+            isRunning = true
+         for (i in 1..countN){
+             delay(1000)
+             countTime = i
+         }
+            resultState = "Respuesta obtenida de la Web"
+            countN ++
+            isRunning = false
+        }
+    }
 
     fun fetchData(){
 
@@ -23,6 +42,12 @@ class MainViewModel:ViewModel(){
             delay(5000)
             resultState = "Respuesta obtenida de la Web"
         }
+    }
+
+    fun limpiarContadores(){
+        resultState = ""
+        countN = 2
+        countTime = 0
     }
 
 

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,8 +23,27 @@ import com.mexiti.corrutinasapp_2027_i.R
 import com.mexiti.corrutinasapp_2027_i.ui.theme.CorrutinasApp2027ITheme
 import com.mexiti.corrutinasapp_2027_i.viewmodel.MainViewModel
 
+
 @Composable
-fun CoroutinesApp(viewModel: MainViewModel, modifier: Modifier = Modifier){
+fun CoroutinesApp(viewModel: MainViewModel, modifier: Modifier = Modifier) {
+  CoroutinesAppContent(
+      viewModel.resultState,
+      { viewModel.fetchDataTimer() },
+      {viewModel.limpiarContadores()},
+      viewModel.countTime,
+      isRunning = viewModel.isRunning
+  )
+}
+
+@Composable
+fun CoroutinesAppContent(
+  resultState: String,
+  onFetchData: () -> Unit,
+  reset:() -> Unit,
+  timer:Int,
+  isRunning: Boolean,
+  modifier : Modifier = Modifier
+){
     var changeColor by remember {
         mutableStateOf(false)
     }
@@ -49,23 +67,41 @@ fun CoroutinesApp(viewModel: MainViewModel, modifier: Modifier = Modifier){
             Text(stringResource(R.string.cambio_de_color))
         }
         Spacer(modifier.height(30.dp) )
+        Text("$timer [s]")
 
-        Text(viewModel.resultState)
+        Spacer(modifier.height(20.dp))
+
+        Text(resultState)
         Spacer(modifier.height(30.dp))
-        Button({
-                 viewModel.fetchData()
-        }) {
+        Button(
+            {
+                 onFetchData()
+        },
+            enabled = !isRunning
+        ) {
             Text(stringResource(R.string.realizar_consulta))
+        }
+        Spacer( modifier.height(10.dp))
+        Button(
+            {reset},
+            colors = ButtonDefaults.buttonColors(Color.DarkGray)
+        ) {
+            Text("Reset")
         }
     }
 }
 
-/*
+
 @Preview
 @Composable
 fun CoroutinesAppPreview(){
     CorrutinasApp2027ITheme(darkTheme = false) {
-        CoroutinesApp()
+        CoroutinesAppContent(
+            "Respuesta de la Web",
+            {},
+            {},
+            4,
+            true,
+        )
     }
 }
-*/
