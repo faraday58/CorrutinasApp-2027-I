@@ -49,11 +49,14 @@ fun CoroutinesApp(viewModel: MainViewModel, modifier: Modifier = Modifier){
             Text(stringResource(R.string.cambio_de_color))
         }
         Spacer(modifier.height(30.dp) )
-
+        Text("Tiempo de respuesta del servidor")
+        Spacer(modifier.height(10.dp))
+        Text("${viewModel.countTime} [s]")
+        Spacer(modifier.height(30.dp))
         Text(viewModel.resultState)
         Spacer(modifier.height(30.dp))
         Button({
-                 viewModel.fetchData()
+                 viewModel.fetchDataNoSincronizado()
         }) {
             Text(stringResource(R.string.realizar_consulta))
         }

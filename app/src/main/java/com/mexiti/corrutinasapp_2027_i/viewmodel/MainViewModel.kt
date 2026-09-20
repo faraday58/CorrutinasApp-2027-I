@@ -28,6 +28,20 @@ class MainViewModel:ViewModel(){
         }
     }
 
+    fun fetchDataNoSincronizado(){
+        val job1 = viewModelScope.launch {
+            for (i in 1..5){
+                delay(1000)
+                countTime = i
+            }
+        }
+        val job2 = viewModelScope.launch {
+            delay(5000)
+            resultState = "Respuesta desde el Servidor Web"
+        }
+    }
+
+
     fun fetchDataSecuencial(){
         viewModelScope.launch {
             resetState()
